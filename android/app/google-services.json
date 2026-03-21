@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "360558280614",
+    "project_id": "moon-app-8206d",
+    "storage_bucket": "moon-app-8206d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360558280614:android:2da267a37d6d022f6ad967",
+        "android_client_info": {
+          "package_name": "app.rash07.moonapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl01CDWoys3SEpsxSYu_fiqMa0O5eS8Oo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
