@@ -1,4 +1,4 @@
-package com.example.moon_app
+package app.rash07.moonapp
 
 import io.flutter.embedding.android.FlutterActivity
 
