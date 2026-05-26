@@ -141,7 +141,11 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   //build list of posts for the given category
-  Widget _buildCategoryPosts(String category, List<Post> posts) {
+  Widget _buildCategoryPosts(
+    String category,
+    List<Post> posts,
+    Map<String, int> commentCounts,
+  ) {
     //filter posts for given category
     final postsInThisCategory = posts
         .where((post) => post.category == category)
@@ -153,10 +157,19 @@ class _HomeScreenState extends State<HomeScreen>
     }
 
     //list of posts in the given category
-    return ListView.builder(
+    return ListView.separated(
       itemCount: postsInThisCategory.length,
+      separatorBuilder: (context, index) => Divider(
+        indent: 16,
+        endIndent: 16,
+        color: Theme.of(context).colorScheme.tertiary,
+      ),
       itemBuilder: (context, index) {
+        //get individual post
         final post = postsInThisCategory[index];
+
+        //get comment count
+        final commentCount = commentCounts[post.id] ?? 0;
 
         return PostTile(
           post: post,
@@ -167,6 +180,7 @@ class _HomeScreenState extends State<HomeScreen>
             context,
             MaterialPageRoute(builder: (context) => PostScreen(post: post)),
           ),
+          commentCount: commentCount,
         );
       },
     );
@@ -205,9 +219,13 @@ class _HomeScreenState extends State<HomeScreen>
             return TabBarView(
               controller: _tabController,
               children: [
-                _buildCategoryPosts("Build", state.posts),
-                _buildCategoryPosts("Launch", state.posts),
-                _buildCategoryPosts("Monetize", state.posts),
+                _buildCategoryPosts("Build", state.posts, state.commentCounts),
+                _buildCategoryPosts("Launch", state.posts, state.commentCounts),
+                _buildCategoryPosts(
+                  "Monetize",
+                  state.posts,
+                  state.commentCounts,
+                ),
               ],
             );
           }

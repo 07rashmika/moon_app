@@ -10,9 +10,10 @@ class PostLoading extends PostState {}
 
 //loaded with posts
 class PostsLoaded extends PostState {
-  PostsLoaded(this.posts);
+  PostsLoaded(this.posts, {required this.commentCounts});
 
   final List<Post> posts;
+  final Map<String, int> commentCounts;
 }
 
 //error state

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moon_app/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:moon_app/features/home/domain/entities/post.dart';
 
 class PostTile extends StatelessWidget {
@@ -7,47 +9,87 @@ class PostTile extends StatelessWidget {
     required this.post,
     required this.onDelete,
     required this.onTap,
+    this.commentCount = 0,
+    this.showFullContent = false,
   });
 
   final Post post;
   final void Function() onDelete;
   final void Function() onTap;
+  final int commentCount;
+  final bool showFullContent;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    //get username of current signed user
+    final authCubit = context.read<AuthCubit>();
+    final String currentUser = authCubit.currentUser?.email ?? '';
+
+    //check if comment was posted by this user
+    final bool canDelete = post.username == currentUser;
+
+    //prepare username to Display
+    final displayUsername = post.username.split('@').first;
+
+    return InkWell(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: .circular(12),
-        ),
+      child: Padding(
         padding: .all(16),
-        margin: .symmetric(horizontal: 16, vertical: 8),
         child: Column(
           crossAxisAlignment: .start,
           mainAxisSize: .min,
           children: [
+            //header row: title & delete button
+            Row(
+              mainAxisAlignment: .spaceBetween,
+              crossAxisAlignment: .center,
+              children: [
+                //title
+                Text(
+                  post.title,
+                  style: TextStyle(fontWeight: .bold, fontSize: 20),
+                ),
+
+                //delete button
+                if (canDelete)
+                  IconButton(onPressed: onDelete, icon: Icon(Icons.more_horiz)),
+              ],
+            ),
+
+            SizedBox(height: 15),
+
+            //content
+            Text(
+              post.content,
+              maxLines: showFullContent ? null : 2,
+              overflow: showFullContent ? null : .ellipsis,
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            ),
+
+            SizedBox(height: 15),
+
+            //bottom row: username & comment count
             Row(
               mainAxisAlignment: .spaceBetween,
               children: [
+                //username
                 Text(
-                  post.username,
+                  displayUsername,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: 12,
                   ),
                 ),
 
-                IconButton(onPressed: onDelete, icon: Icon(Icons.cancel)),
+                //comment count
+                Text(
+                  "$commentCount comments",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 12,
+                  ),
+                ),
               ],
-            ),
-            SizedBox(height: 10),
-            Text(post.title, style: TextStyle(fontWeight: .bold, fontSize: 20)),
-            SizedBox(height: 5),
-            Text(
-              post.content,
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
           ],
         ),
