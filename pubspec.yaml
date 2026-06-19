@@ -38,6 +38,7 @@ dependencies:
   firebase_auth: ^6.2.0
   flutter_bloc: ^9.1.1
   flutter_dotenv: ^5.1.0
+  cloud_firestore: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -63,8 +64,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-      - .env
-  #   - images/a_dot_burr.jpeg
+    - .env
+    - lib/assets/images/apple-logo.png
+    - lib/assets/images/google.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
